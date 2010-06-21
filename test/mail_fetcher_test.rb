@@ -26,5 +26,18 @@ class MailFetcherTest < Test::Unit::TestCase
 		should "create a valid instance of Net::IMAP on initialization" do
 			@fetcher.imap == Net::IMAP
 		end
+		
+		should "login to the IMAP server successfully" do
+			assert_equal @fetcher.auth_response.name, 'OK'
+		end
+		
+		should "return an array of message UIDs" do
+			@fetcher.get_message_uids
+			@fetcher.message_uids.class == Array
+		end
+		
+		should "#fetch_messages should return an array" do
+			@fetcher.fetch_and_process_messages.class == Array
+		end
 	end
 end
