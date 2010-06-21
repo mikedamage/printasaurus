@@ -5,7 +5,7 @@ require "shoulda"
 require "yaml"
 
 class MailFetcherTest < Test::Unit::TestCase
-	context "MailFetcher" do
+	context "Printasaurus::MailFetcher" do
 		setup do
 			# Need to supply your own config file w/ login credentials and stuff.
 			@config        = YAML.load_file(File.join(File.dirname(__FILE__), '..', 'config.yml'))[:mailboxes]
