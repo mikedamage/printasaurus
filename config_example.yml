@@ -1,0 +1,21 @@
+# = Printasaurus Configuration File (rename this to config.yml)
+#
+# You can copy this file to /etc/printasaurus by running `thor project:copy_config`
+# Some of these options are stubs, with no functionality in the application yet. They're marked as such.
+:printing:
+  :printer: default
+  #stub
+  :copies: 1
+  #/stub
+
+:mailboxes:
+  # Each mailbox entry needs to be named, but it doesn't matter what that name is as long as it's a valid YAML property.
+  :fifthroom_imap:
+    :use_ssl: true
+    :host: your_imap_server.com
+    :port: 993
+    :username: foobar@snazz.com
+    # Might be a good idea to quote your password if it has weird characters in it (except if those weird chars are quotes)
+    :password: "3L337z$%"
+    # This phrase must be in the subject for a message to be considered for printing (hopefully this will cut down on print spam)
+    :subject_code: printme
