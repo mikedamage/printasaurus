@@ -11,7 +11,7 @@ module Printasaurus
 		end
 		
 		def add_print_jobs
-			@print_job = Cups::PrintJob.new(@attachment.default_media.path)
+			@print_job = Cups::PrintJob.new(@message.default_media.path)
 		end
 		
 		def print_queued_job
