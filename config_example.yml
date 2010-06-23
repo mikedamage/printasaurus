@@ -2,6 +2,12 @@
 #
 # You can copy this file to /etc/printasaurus by running `thor project:copy_config`
 # Some of these options are stubs, with no functionality in the application yet. They're marked as such.
+daemon:
+  # Absolute path to log file
+  log: /Users/mike/Desktop/printasaurus.log
+  # How often (in seconds) should the daemon check the mailbox?
+  interval: 240
+
 printing:
   printer: default
   #stub
