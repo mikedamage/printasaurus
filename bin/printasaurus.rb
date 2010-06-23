@@ -48,7 +48,10 @@ module Printasaurus
 							printer.add_print_jobs
 							printer.print_queued_job
 						end
+						fetcher.logout_from_server
+						fetcher.purge_temp_files
 					else
+						fetcher.logout_from_server
 						return {:code => 2, :message => 'No messages found'}
 					end
 				end
