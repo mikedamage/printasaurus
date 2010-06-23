@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+#
+# = Printasaurus Daemon Controller
+
+require "rubygems"
+require "daemons"
+
+Daemons.run(File.join(File.dirname(__FILE__), 'printasaurus_daemon.rb'))

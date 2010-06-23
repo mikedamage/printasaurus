@@ -1,6 +1,5 @@
-#!/usr/bin/env ruby
-#
 # = Printasaurus Daemon
+# Controlled by printasaurus.rb. Do not invoke this directly.
 
 require File.join(File.dirname(__FILE__), '..', 'lib', 'mail_fetcher')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'file_printer')
@@ -28,11 +27,11 @@ end
 
 module Printasaurus
 	class Daemon
-		attr_accessor :args
+		attr_accessor :config_file, :log
+		attr_reader :config
 	
-		def initialize(args)
-			@args        = args
-			@config_file = @args.shift
+		def initialize(config="/etc/printasaurus.conf.yml")
+			@config_file = config
 		end
 	
 		def run!
@@ -55,8 +54,9 @@ module Printasaurus
 						return {:code => 2, :message => 'No messages found'}
 					end
 				end
+				return {:code => 0, :message => 'Message(s) found, downloaded, and printed'}
 			else
-				return {:code => 1, :message => 'Configuration file invalid'}
+				return {:code => 1, :message => 'Configuration file invalid or not found'}
 			end
 		end
 	
@@ -70,7 +70,19 @@ module Printasaurus
 	end
 end
 
-if __FILE__ == $0
-	app = Daemon.new(ARGV)
-	app.run!
+if ARGV.any?
+	app = Printasaurus::Daemon.new(ARGV.first)
+else
+	app = Printasaurus::Daemon.new
+end
+
+if FileTest.exist? app.config[:daemon][:log]
+	log = Logger.new(app.config[:daemon][:log])
+else
+	log = Logger.new(STDOUT)
+end
+
+loop do
+	result = app.run!
+	sleep(app.config[:daemon][:interval].to_i)
 end
