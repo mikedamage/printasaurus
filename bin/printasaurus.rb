@@ -31,16 +31,29 @@ module Printasaurus
 		attr_accessor :args
 	
 		def initialize(args)
-			@args = args
+			@args        = args
 			@config_file = @args.shift
 		end
 	
 		def run!
 			if load_config_file
-				
+				@mailboxes = @config_file[:mailboxes]
+				@mailboxes.each do |key, box_config|
+					fetcher = Printasaurus::MailFetcher.new(box_config)
+					fetcher.fetch_and_process_messages
+					
+					if fetcher.messages.any?
+						fetcher.messages.each do |msg|
+							printer = Printasaurus::FilePrinter.new(msg)
+							printer.add_print_jobs
+							printer.print_queued_job
+						end
+					else
+						return {:code => 2, :message => 'No messages found'}
+					end
+				end
 			else
-				STDERR.puts "Error loading config file"
-				exit 1
+				return {:code => 1, :message => 'Configuration file invalid'}
 			end
 		end
 	

@@ -9,7 +9,8 @@ module Printasaurus
 		attr_accessor :imap, :messages, :attachments
 		
 		def initialize(config={})
-			@config = config
+			@config   = config
+			@messages = []
 			
 			if verify_config
 				@imap          = Net::IMAP.new(@config[:host], @config[:port], @config[:use_ssl])
@@ -23,11 +24,6 @@ module Printasaurus
 		def fetch_and_process_messages
 			get_message_uids
 			
-			# Clear out the message array
-			if @messages.any?
-				@messages = []
-			end
-			
 			# Fetch and parse each message by UID
 			# TODO: Check subjects on server to cut down on unnecessary fetching/parsing
 			if @message_uids.any?
@@ -35,6 +31,7 @@ module Printasaurus
 					msg = @imap.uid_fetch(uid, 'RFC822')
 					mms = MMS2R.parse(msg.first.attr['RFC822'])
 					@messages << mms
+					mark_message_read(uid)
 				end
 				@messages
 			else
