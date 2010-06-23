@@ -32,7 +32,7 @@ module Printasaurus
 	
 		def initialize(config="/etc/printasaurus.conf.yml")
 			@config_file = config
-			@config      = FileTest.exist? @config_file ? YAML.load(File.read(@config_file)).recursive_symbolize_keys! : {}
+			@config      = FileTest.exist?(@config_file) ? YAML.load(File.read(@config_file)).recursive_symbolize_keys! : {}
 		end
 	
 		def run!
