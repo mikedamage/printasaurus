@@ -71,7 +71,7 @@ else
 end
 
 if FileTest.exist?(File.dirname(app.config[:daemon][:log]))
-	log = PrintasaurusLogger.new(app.config[:daemon][:log])
+	log = PrintasaurusLogger.new(app.config[:daemon][:log], 5, 1024000) # 5 old logs, rollover @ 1MB
 else
 	log = PrintasaurusLogger.new(STDOUT)
 end
