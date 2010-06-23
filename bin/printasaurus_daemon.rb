@@ -32,11 +32,12 @@ module Printasaurus
 	
 		def initialize(config="/etc/printasaurus.conf.yml")
 			@config_file = config
+			@config      = FileTest.exist? @config_file ? YAML.load(File.read(@config_file)).recursive_symbolize_keys! : {}
 		end
 	
 		def run!
-			if load_config_file
-				@mailboxes = @config_file[:mailboxes]
+			if @config[:mailboxes]
+				@mailboxes = @config[:mailboxes]
 				@mailboxes.each do |key, box_config|
 					fetcher = Printasaurus::MailFetcher.new(box_config)
 					fetcher.fetch_and_process_messages
@@ -59,14 +60,6 @@ module Printasaurus
 				return {:code => 1, :message => 'Configuration file invalid or not found'}
 			end
 		end
-	
-		private
-			def load_config_file
-				if FileTest.exist? @config_file
-					@config = YAML.load(File.read(@config_file)).recursive_symbolize_keys!
-				end
-				false
-			end
 	end
 end
 
