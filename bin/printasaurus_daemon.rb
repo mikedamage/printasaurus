@@ -3,6 +3,7 @@
 
 require File.join(File.dirname(__FILE__), '..', 'lib', 'mail_fetcher')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'file_printer')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'printasaurus_logger')
 require 'daemons'
 
 class Hash
@@ -70,9 +71,9 @@ else
 end
 
 if FileTest.exist?(File.dirname(app.config[:daemon][:log]))
-	log = Logger.new(app.config[:daemon][:log])
+	log = PrintasaurusLogger.new(app.config[:daemon][:log])
 else
-	log = Logger.new(STDOUT)
+	log = PrintasaurusLogger.new(STDOUT)
 end
 
 log.info("Printasaurus daemon started.")
