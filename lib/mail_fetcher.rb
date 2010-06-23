@@ -40,11 +40,11 @@ module Printasaurus
 		end
 		
 		def get_message_uids
-			@message_uids = @imap.uid_search(['NEW'])
+			@message_uids = @imap.uid_search('ALL')
 		end
 		
 		def logout_from_server
-			@imap.expunge if @config[:delete_messages]
+			@imap.expunge #if @config[:delete_messages]
 			@imap.logout
 		end
 		
@@ -62,9 +62,9 @@ module Printasaurus
 			def mark_message_read(uid)
 				@imap.uid_store(uid, '+FLAGS', [:Seen])
 				
-				if @config[:delete_messages]
-					@imap.uid_store(uid, '+FLAGS', [:Deleted])
-				end
+				#if @config[:delete_messages]
+				@imap.uid_store(uid, '+FLAGS', [:Deleted])
+				#end
 			end
 	end
 end
