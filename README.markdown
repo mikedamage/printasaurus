@@ -17,3 +17,5 @@ I haven't tested it on any other platforms besides OS X 10.5 and 10.6. Once I ba
 ## Usage
 
 _coming soon_
+
+_Note:_ Throws errors if you don't have a default printer selected.
