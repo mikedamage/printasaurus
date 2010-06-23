@@ -82,6 +82,8 @@ else
 	log = Logger.new(STDOUT)
 end
 
+log.info("Printasaurus daemon started.")
+
 loop do
 	result = app.run!
 	sleep(app.config[:daemon][:interval].to_i)
