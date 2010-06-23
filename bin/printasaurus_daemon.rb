@@ -69,7 +69,7 @@ else
 	app = Printasaurus::Daemon.new
 end
 
-if FileTest.exist? app.config[:daemon][:log]
+if FileTest.exist?(File.dirname(app.config[:daemon][:log]))
 	log = Logger.new(app.config[:daemon][:log])
 else
 	log = Logger.new(STDOUT)
@@ -78,6 +78,12 @@ end
 log.info("Printasaurus daemon started.")
 
 loop do
+	log.info("Checking mailbox")
+	
 	result = app.run!
+	
+	log.info(result[:message])
+	log.info("Sleeping...")
+	
 	sleep(app.config[:daemon][:interval].to_i)
 end
