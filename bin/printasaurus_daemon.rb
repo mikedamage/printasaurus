@@ -79,12 +79,17 @@ end
 log.info("Printasaurus daemon started.")
 
 loop do
-	log.info("Checking mailbox")
+	log.debug("Checking mailbox")
 	
 	result = app.run!
 	
-	log.info(result[:message])
-	log.info("Sleeping...")
+	case result[:code]
+		when 0 then log.info(result[:message])
+		when 1 then log.fatal(result[:message])
+		when 2 then log.debug(result[:message])
+	end
+	
+	log.debug("Sleeping...")
 	
 	sleep(app.config[:daemon][:interval].to_i)
 end
